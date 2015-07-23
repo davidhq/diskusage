@@ -1,0 +1,15 @@
+/Volumes/
+/david/Downloads
+/david/Desktop
+/david/Movies
+/david/temp
+/david/Temp
+/david/Misc/Tutorials
+/private/tmp
+/david/tmp
+/david/Misc/Aina
+/david/.Trash
+/private/var/vm/
+Spotlight-V100
+DocumentRevisions-V100
+/Library/Caches
