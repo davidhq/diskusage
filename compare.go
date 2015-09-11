@@ -60,8 +60,8 @@ func main() {
     a := "snapshot_prev.txt"
     b := "snapshot.txt"
     //TESTING
-    a = "test_a.txt"
-    b = "test_b.txt"
+    //a = "test_a.txt"
+    //b = "test_b.txt"
     const new_limit uint64 = 1000 //kilo
     const diff_limit uint64 = 1000 //kilo
 
@@ -132,14 +132,14 @@ func main() {
       if(size > 0) {
         old_size, existed := prev[file_name]
         if(!existed && size > new_limit) {
-          lines = append(lines, Line{ Size: size, Info: "New : " + file_name + " | Size: " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) } )
+          lines = append(lines, Line{ Size: size, Info: "New " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) + ":\t" + file_name } )
           total += size
         }
         var diff uint64
         if(size > old_size) {
           diff = size - old_size
           if(existed && diff > diff_limit) {
-            lines = append(lines, Line{ Size: diff, Info: " Inc: " + file_name + " | Diff: " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) } )
+            lines = append(lines, Line{ Size: diff, Info: "+++ " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name  } )
             total += diff
           }
         }
@@ -154,7 +154,7 @@ func main() {
       diff_file.WriteString("\n")
     }
 
-    lineout = "Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = "= Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
     lineout = fmt.Sprintf("\n%s\n\n", lineout)
     fmt.Print(lineout)
     diff_file.WriteString(lineout)
@@ -169,14 +169,14 @@ func main() {
       if(size > 0) {
         old_size, existed := current[file_name]
         if(!existed && size > new_limit) {
-          lines = append(lines, Line{ Size: size, Info: "Del : " + file_name + " | Size: " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) } )
+          lines = append(lines, Line{ Size: size, Info: "Rem " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) + ":\t" + file_name } )
           total += size
         }
         var diff uint64
         if(size > old_size) {
           diff = size - old_size
           if(existed && diff > diff_limit) {
-            lines = append(lines, Line{ Size: diff, Info: " Dec: " + file_name + " | Diff: " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) } )
+            lines = append(lines, Line{ Size: diff, Info: "--- " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name } )
             total += diff
           }
         }
@@ -191,7 +191,7 @@ func main() {
       diff_file.WriteString("\n")
     }
 
-    lineout = "Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = "= Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
     lineout = fmt.Sprintf("\n%s\n\n", lineout)
     fmt.Print(lineout)
     diff_file.WriteString(lineout)
