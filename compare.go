@@ -120,6 +120,11 @@ func main() {
 
     //check for new files and size increases
 
+    var lineout string
+    diff_file, err := os.Create("diff.txt")
+    check(err)
+    defer diff_file.Close()
+
     var lines Lines
 
     for file_name := range current {
@@ -145,12 +150,14 @@ func main() {
 
     for _, line := range lines {
       color.Green(line.Info)
+      diff_file.WriteString(line.Info)
+      diff_file.WriteString("\n")
     }
 
-    fmt.Println()
-    fmt.Println("Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE)))
-
-    fmt.Println()
+    lineout = "Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = fmt.Sprintf("\n%s\n\n", lineout)
+    fmt.Print(lineout)
+    diff_file.WriteString(lineout)
 
     //check for removed files and size decreases
 
@@ -180,8 +187,12 @@ func main() {
 
     for _, line := range lines {
       color.Red(line.Info)
+      diff_file.WriteString(line.Info)
+      diff_file.WriteString("\n")
     }
 
-    fmt.Println()
-    fmt.Println("Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE)))
+    lineout = "Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = fmt.Sprintf("\n%s\n\n", lineout)
+    fmt.Print(lineout)
+    diff_file.WriteString(lineout)
 }
