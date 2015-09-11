@@ -1,5 +1,5 @@
 # warning!! remove /Volumes/ line from exclude.txt first!
 # run with sudo!
-find /Volumes/BLACKIE/Backups.backupdb/eclipse/2015-07-14-210446/Macintosh\ HD -type f -exec du -akx {} + | grep -vf exclude.txt > snapshot_a.txt
-find /Volumes/BLACKIE/Backups.backupdb/eclipse/Latest/Macintosh\ HD -type f -exec du -akx {} + | grep -vf exclude.txt > snapshot_b.txt
+#find /Volumes/BLACKIE/Backups.backupdb/eclipse/2015-07-14-210446/Macintosh\ HD -type f -exec du -akx {} + | grep -vf exclude.txt > snapshot_a.txt
+find /Volumes/BLACKIE/Backups.backupdb/eclipse/Latest/Macintosh\ HD -type f -exec du -akx {} + | grep -vf exclude.txt > snapshot_prev.txt
 #pmset sleepnow

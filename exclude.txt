@@ -1,3 +1,4 @@
+/.fseventsd
 /Volumes/
 /david/Downloads
 /david/Desktop
