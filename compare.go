@@ -58,6 +58,8 @@ func main() {
     //TESTING
     //a = "test_a.txt"
     //b = "test_b.txt"
+
+    //sizes - has to be more than 100k because snapshots ignore smaller files
     const new_limit uint64 = 1000 //kilo
     const diff_limit uint64 = 1000 //kilo
 
