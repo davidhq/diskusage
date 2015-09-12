@@ -1,7 +1,3 @@
-// Reading and writing files are basic tasks needed for
-// many Go programs. First we'll look at some examples of
-// reading files.
-
 package main
 
 import "github.com/pivotal-golang/bytefmt"

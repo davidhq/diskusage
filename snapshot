@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "If external disks are connected it will run much slower!"
+cat exclude.txt | sed 's/^/\\b/' > /tmp/diff_exclude.txt
+sudo find / -type f ! -iwholename "/Volumes*" -exec du -akx {} \; | grep -vf /tmp/diff_exclude.txt > snapshot.txt

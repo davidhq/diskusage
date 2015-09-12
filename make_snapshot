@@ -1,3 +1,0 @@
-#!/bin/bash
-echo "Make sure no external disks are connected!"
-sudo find / -type f -exec du -akx {} + | grep -vf exclude.txt > snapshot.txt
