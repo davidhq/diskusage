@@ -13,5 +13,5 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-cat exclude.txt | grep -v "/Volumes/" | sed 's/^/\\b/' > /tmp/diff_exclude_ext.txt
+cat exclude.txt | grep . | grep -v "/Volumes/" | sed 's/^/\\s/' > /tmp/diff_exclude_ext.txt
 find "/Volumes/${1}/Backups.backupdb/eclipse/Latest/Macintosh\ HD" -type f -size +100k -exec du -akx {} \; | sed "s/\/Volumes\/${1}\/Backups.backupdb\/eclipse\/Latest\/Macintosh HD//" | grep -vf /tmp/diff_exclude_ext.txt > snapshot_prev.txt
