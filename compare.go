@@ -53,11 +53,18 @@ func IsDirectory(path string) (bool) {
 
 func main() {
 
-    a := "snapshot_prev.txt"
-    b := "snapshot.txt"
-    //TESTING
-    //a = "test_a.txt"
-    //b = "test_b.txt"
+    argsWithoutProg := os.Args[1:]
+
+    var a string
+    var b string
+
+    if(len(argsWithoutProg) == 0) {
+      a = "snapshot_prev.txt"
+      b = "snapshot.txt"
+    } else {
+      a = argsWithoutProg[0]
+      b = argsWithoutProg[1]
+    }
 
     //sizes - has to be more than 100k because snapshots ignore smaller files
     const new_limit uint64 = 1000 //kilo
