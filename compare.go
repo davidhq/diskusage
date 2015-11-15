@@ -80,9 +80,9 @@ func main() {
 
     re, err := regexp.Compile(`(\d+)\s+\.?(.*)`)
 
-    var total uint64
+    var added uint64
 
-    fmt.Print("Reading previous snapshot... ")
+    fmt.Print("Reading previous snapshot... " + a)
 
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
@@ -94,7 +94,7 @@ func main() {
     }
     check(scanner.Err())
 
-    fmt.Println("done")
+    fmt.Println()
 
     //read current snapshot
 
@@ -104,7 +104,7 @@ func main() {
     check(err)
     defer file.Close()
 
-    fmt.Print("Reading current snapshot... ")
+    fmt.Print("Reading current snapshot... " + b)
 
     scanner = bufio.NewScanner(file)
     for scanner.Scan() {
@@ -119,8 +119,7 @@ func main() {
         log.Fatal(err)
     }
 
-    fmt.Println("done")
-
+    fmt.Println()
     fmt.Println()
 
     //check for new files and size increases
@@ -138,14 +137,14 @@ func main() {
         old_size, existed := prev[file_name]
         if(!existed && size > new_limit) {
           lines = append(lines, Line{ Size: size, Info: "New " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) + ":\t" + file_name } )
-          total += size
+          added += size
         }
         var diff uint64
         if(size > old_size) {
           diff = size - old_size
           if(existed && diff > diff_limit) {
-            lines = append(lines, Line{ Size: diff, Info: "+++ " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name  } )
-            total += diff
+            lines = append(lines, Line{ Size: diff, Info: "Inc " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name  } )
+            added += diff
           }
         }
       }
@@ -159,7 +158,7 @@ func main() {
       diff_file.WriteString("\n")
     }
 
-    lineout = "= Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = "= Added: " + bytefmt.ByteSize(uint64(added * bytefmt.KILOBYTE))
     lineout = fmt.Sprintf("\n%s\n\n", lineout)
     fmt.Print(lineout)
     diff_file.WriteString(lineout)
@@ -167,7 +166,7 @@ func main() {
     //check for removed files and size decreases
 
     lines = make(Lines, 0)
-    total = 0
+    var removed uint64
 
     for file_name := range prev {
       size := prev[file_name]
@@ -175,14 +174,14 @@ func main() {
         old_size, existed := current[file_name]
         if(!existed && size > new_limit) {
           lines = append(lines, Line{ Size: size, Info: "Rem " + bytefmt.ByteSize(size * bytefmt.KILOBYTE) + ":\t" + file_name } )
-          total += size
+          removed += size
         }
         var diff uint64
         if(size > old_size) {
           diff = size - old_size
           if(existed && diff > diff_limit) {
-            lines = append(lines, Line{ Size: diff, Info: "--- " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name } )
-            total += diff
+            lines = append(lines, Line{ Size: diff, Info: "Dec " + bytefmt.ByteSize(diff * bytefmt.KILOBYTE) + ":\t" + file_name } )
+            removed += diff
           }
         }
       }
@@ -191,13 +190,26 @@ func main() {
     sort.Sort(sort.Reverse(lines))
 
     for _, line := range lines {
-      color.Red(line.Info)
+      color.Yellow(line.Info)
       diff_file.WriteString(line.Info)
       diff_file.WriteString("\n")
     }
 
-    lineout = "= Total: " + bytefmt.ByteSize(uint64(total * bytefmt.KILOBYTE))
+    lineout = "= Removed: " + bytefmt.ByteSize(uint64(removed * bytefmt.KILOBYTE))
     lineout = fmt.Sprintf("\n%s\n\n", lineout)
     fmt.Print(lineout)
     diff_file.WriteString(lineout)
+
+    // NET
+
+    diff := int64(added) - int64(removed)
+    if(diff < 0) {
+      lineout = "= Net total: -" + bytefmt.ByteSize(uint64(-diff * bytefmt.KILOBYTE))
+      color.Yellow(lineout)
+      diff_file.WriteString(lineout + "\n")
+    } else {
+      lineout = "= Net total: " + bytefmt.ByteSize(uint64(diff * bytefmt.KILOBYTE))
+      color.Green(lineout)
+      diff_file.WriteString(lineout + "\n")
+    }
 }

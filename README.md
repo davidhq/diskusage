@@ -12,5 +12,16 @@ or create snapshots at two different points in time -
 
     go run compare.go
 
+or
+
+    go run compare.go snapshot_prev.txt snapshot_current.txt
+
 Colored diff is shown in terminal and also saved to `diff.txt`.
 
+To sumarize some particular changeset:
+
+    go run sum filter
+
+For example observe the sum of all changes in png files between last two snapshots:
+
+    go run sum png
