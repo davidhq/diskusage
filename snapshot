@@ -1,3 +1,4 @@
 #!/bin/bash
-echo "If external disks are connected it will run much slower!\n..."
-sudo find / -type f -size +100k ! -iwholename "/Volumes*" -exec du -akx {} \; > snapshot.txt
+echo "If external disks are connected it will run much slower!"
+echo "Running..."
+sudo find / -type f -size +100k ! -iwholename "/Volumes*" ! -iwholename "/dev/*" -exec wc -c {} \; > snapshot.txt

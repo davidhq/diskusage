@@ -14,4 +14,4 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-find "/Volumes/${1}/Backups.backupdb/eclipse/Latest/Macintosh HD" -type f -size +100k -exec du -akx {} \; | sed "s/\/Volumes\/${1}\/Backups.backupdb\/eclipse\/Latest\/Macintosh HD//" > snapshot_prev.txt
+find "/Volumes/${1}/Backups.backupdb/eclipse/Latest/Macintosh HD" -type f -size +100k -exec wc -c {} \; | sed "s/\/Volumes\/${1}\/Backups.backupdb\/eclipse\/Latest\/Macintosh HD//" > snapshot_prev.txt
