@@ -10,7 +10,7 @@ import (
     "regexp"
     "strconv"
     "log"
-    //"strings"
+    "strings"
     "sort"
 )
 
@@ -53,7 +53,9 @@ func IsDirectory(path string) (bool) {
 
 func main() {
 
-    argsWithoutProg := os.Args[1:]
+  fmt.Println(os.Args)
+
+    argsWithoutProg := strings.Fields(os.Args[1]) //split the string
 
     var a string
     var b string
